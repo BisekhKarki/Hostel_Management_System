@@ -1,26 +1,33 @@
 from django.shortcuts import render,redirect
 from .forms import UserCreationForm,loginUserForm
 from django.contrib import messages
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
+# Authenticate a user and log into the dashboard
 def login_user(request):
     form = loginUserForm()
     if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        role = request.POST.get('role')
-        user = authenticate(request,email=email,password=password,role=role)
-        if user:
-            login(request,user)
-            messages.success(request, "You have successfully logged in.")
-            return redirect('Student')
+        form = loginUserForm(request,data=request.POST) 
+        # role = request.POST.get('role')
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            role = request.POST['role']
+            user = authenticate(request,username=username,password=password,role=role)
+            if user is not None:
+                login(request,user)
+                messages.success(request, "You have successfully logged in.")
+                return redirect('Student')
         else:
             messages.error(request, "Invalid email or password.")
     return render(request,'login.html',{
         'form':form
     })
 
+
+
+# Register a user
 def Signup_user(request):
     form = UserCreationForm()
     if request.method == "POST":
@@ -34,5 +41,7 @@ def Signup_user(request):
     })
 
 
+
+# Student Dashboard
 def student(request):
     return render(request,'Student/Student.html')
