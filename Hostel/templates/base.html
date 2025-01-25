@@ -10,6 +10,52 @@
     />
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'Dashboard' %}">HSM</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'Dashboard' %}"
+                >Home
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Student' %}">Students</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Room' %}">Rooms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{%  url 'About' %}">About</a>
+            </li>
+          </ul>
+          {% if user.is_authenticated %}
+          <button type="button" class="btn btn-outline-warning">
+            {{user.username}}
+          </button>
+          <a href="{% url 'logout' %}" class="btn btn-secondary mx-2">Logout</a>
+          {% else %}
+          <div>
+            <a class="btn btn-secondary">Login</a>
+            <a class="btn btn-secondary">Register</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <br />
       <!-- Notification messages -->
@@ -38,9 +84,13 @@
       {% endfor %}
       <br />
     </div>
+
     {% block content %}
     <br />
     {% endblock %}
+    <footer class="bg-dark text-white text-center py-3">
+      <p>&copy; 2025 Hostel Management System. All Rights Reserved.</p>
+    </footer>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

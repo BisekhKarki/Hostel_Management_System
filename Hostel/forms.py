@@ -8,25 +8,16 @@ from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 # User login and Signup form
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder':'Abc@gmail.com', 'class':'form-control'}),label="Enter your email")
-    role = forms.ModelChoiceField(
-            queryset=UserType.objects.all(),
-            widget=forms.Select(attrs={'class':'form-control'}),
-            label="Selet a role"
-        )
     class Meta:
         model = User
-        fields = ['username','email','password1','role']
+        fields = ['username','email','password1']
 
 
 class loginUserForm(AuthenticationForm):
-    role = forms.ModelChoiceField(
-            queryset=UserType.objects.all(),
-            widget=forms.Select(attrs={'class':'form-control'}),
-            label="Selet a role"
-        )
+   
     class Meta:
         model = User
-        fields = ['email','password','role']
+        fields = ['email','password']
 
 
 

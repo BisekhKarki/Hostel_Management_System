@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .forms import UserCreationForm,loginUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # Authenticate a user and log into the dashboard
@@ -13,8 +14,7 @@ def login_user(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            role = request.POST['role']
-            user = authenticate(request,username=username,password=password,role=role)
+            user = authenticate(request,username=username,password=password)
             if user is not None:
                 login(request,user)
                 messages.success(request, "You have successfully logged in.")
@@ -43,5 +43,24 @@ def Signup_user(request):
 
 
 # Student Dashboard
-def student(request):
+@login_required(login_url='login')
+def dashboard_user(request):
+    return render(request,'Dashboard/Dashboard.html')
+
+
+def About_Us(request):
+    return render(request,'About/About.html')
+
+@login_required(login_url='login')
+def Room(request):
+    return render(request,'Room/Room.html')
+
+@login_required(login_url='login')
+def Student(request):
     return render(request,'Student/Student.html')
+
+
+def logout_User(request):
+    logout(request)
+    messages.success(request,"User logged out successfully")
+    return redirect('Student')
